@@ -56,6 +56,7 @@ def _get_redlib_instances(exclude_anubis: bool = False) -> List[str]:
 
         # Curated fallbacks that are historically reliable
         fallbacks = [
+            "https://redlib.zanity.net",
             "https://safereddit.com",
             "https://redlib.catsarch.com",
             "https://redlib.privacyredirect.com",
@@ -64,9 +65,11 @@ def _get_redlib_instances(exclude_anubis: bool = False) -> List[str]:
             "https://redlib.private.coffee",
             "https://redlib.perennialte.ch",
         ]
-        for fb in fallbacks:
-            if fb not in instances:
-                instances.append(fb)
+        # Prioritize reliable and working instances at the top
+        for fb in reversed(fallbacks):
+            if fb in instances:
+                instances.remove(fb)
+            instances.insert(0, fb)
 
         _cached_redlib_instances = instances
         logger.info(f"Loaded {len(_cached_redlib_instances)} Redlib proxy instances.")
@@ -467,8 +470,8 @@ def _fetch_with_rss(subreddit: str, sort: str = "best") -> List[dict]:
 def _fetch_with_redlib(subreddit: str, sort: str = "best") -> List[dict]:
     """Fetch posts using public Redlib proxy instances without API keys."""
     instances = _get_redlib_instances(exclude_anubis=False)
-    # Prioritize safereddit.com as it is historically the most stable for scraping listings
-    instances = sorted(instances, key=lambda x: "safereddit.com" not in x)
+    # Prioritize active known working instances
+    instances = sorted(instances, key=lambda x: "redlib.zanity.net" not in x)
     
     # Try up to 8 instances
     for instance in instances[:8]:
@@ -479,7 +482,7 @@ def _fetch_with_redlib(subreddit: str, sort: str = "best") -> List[dict]:
         logger.info(f"Fetching posts from Redlib instance: {url}")
         try:
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"}
-            response = requests.get(url, headers=headers, timeout=12)
+            response = requests.get(url, headers=headers, timeout=5)
             response.raise_for_status()
             response.encoding = "utf-8"
             
@@ -550,15 +553,25 @@ def _fetch_with_redlib(subreddit: str, sort: str = "best") -> List[dict]:
                     except ValueError:
                         num_comments = 100
                 
-                # Extract Media Link (Video sources)
+                # Extract Media Link (Video & Image sources)
                 media_url = ""
-                video_match = re.search(r'<source src="(/vid/[^"]+)" type="video/mp4"', block)
+                video_match = (
+                    re.search(r'<video[^>]+src="([^"]+)"', block)
+                    or re.search(r'<source[^>]+src="([^"]+)"', block)
+                    or re.search(r'href="(/packaged/[^"]+)"', block)
+                    or re.search(r'href="(/vid/[^"]+)"', block)
+                )
                 if video_match:
-                    media_url = instance + video_match.group(1)
+                    media_url = video_match.group(1).replace("&#38;", "&")
+                    if media_url.startswith("/"):
+                        media_url = instance + media_url
                 else:
-                    image_match = re.search(r'<a class="post_media_lightbox" href="([^"]+)"', block)
+                    image_match = (
+                        re.search(r'<a[^>]+class="post_media_image[^"]*"[^>]+href="([^"]+)"', block)
+                        or re.search(r'<a[^>]+class="post_media_lightbox"[^>]+href="([^"]+)"', block)
+                    )
                     if image_match:
-                        media_url = image_match.group(1)
+                        media_url = image_match.group(1).replace("&#38;", "&")
                         if media_url.startswith("/"):
                             media_url = instance + media_url
                             

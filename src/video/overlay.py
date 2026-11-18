@@ -354,16 +354,16 @@ generate_top_caption_banner = generate_creator_caption_banner
 
 
 def _parse_color(c: str) -> tuple[int, int, int, int]:
-    """Parse hex color like #FB0101 into RGBA tuple."""
+    """Parse hex color like #1DA1F2 into RGBA tuple."""
     c = c.lstrip("#")
     if len(c) == 6:
         return (int(c[0:2], 16), int(c[2:4], 16), int(c[4:6], 16), 255)
     elif len(c) == 8:
         return (int(c[0:2], 16), int(c[2:4], 16), int(c[4:6], 16), int(c[6:8], 16))
-    return (251, 1, 1, 255)
+    return (29, 161, 242, 255)
 
 
-def _draw_verified_badge(size: int = 40, bg_color: tuple[int, int, int, int] = (251, 1, 1, 255)) -> Image.Image:
+def _draw_verified_badge(size: int = 40, bg_color: tuple[int, int, int, int] = (29, 161, 242, 255)) -> Image.Image:
     """Renders a supersampled, anti-aliased verified checkmark badge."""
     scale = 4
     s = size * scale
@@ -388,6 +388,8 @@ def _create_circular_avatar(img_path: Path | str, size: int = 132) -> Image.Imag
     if not path.exists():
         assets_p = getattr(config, "ASSETS_DIR", config.ROOT / "data" / "assets")
         alt_paths = [
+            assets_p / "OnlyFails Cyan Wing Logo.png",
+            config.ROOT / "data" / "assets" / "OnlyFails Cyan Wing Logo.png",
             assets_p / "Diet Joke.jpg",
             assets_p / "Diet Joke.jpeg",
             assets_p / "Diet Joke.png",
@@ -535,10 +537,10 @@ def generate_creator_header_card(
     if not clean_title:
         clean_title = "Bro doubted physics for a sec 😂"
         
-    name = display_name or getattr(config, "CHANNEL_DISPLAY_NAME", "Diet Joke")
-    hnd = handle or getattr(config, "CHANNEL_HANDLE", "@DietJoke")
-    pfp_path = profile_pic_path or getattr(config, "PROFILE_PICTURE_PATH", config.ROOT / "data" / "assets" / "Diet Joke.jpg")
-    badge_hex = getattr(config, "BADGE_COLOR", "#FB0101")
+    name = display_name or getattr(config, "CHANNEL_DISPLAY_NAME", "OnlyFails")
+    hnd = handle or getattr(config, "CHANNEL_HANDLE", "@onlyfail.s")
+    pfp_path = profile_pic_path or getattr(config, "PROFILE_PICTURE_PATH", config.ROOT / "data" / "assets" / "OnlyFails Cyan Wing Logo.png")
+    badge_hex = getattr(config, "BADGE_COLOR", "#1DA1F2")
     badge_color = _parse_color(badge_hex)
 
     width = 1080

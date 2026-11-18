@@ -13,6 +13,11 @@ ROOT = Path(__file__).resolve().parent
 # Load local environment file
 load_dotenv(ROOT / ".env")
 
+# Ensure bundled ffmpeg/ffprobe binaries are on PATH
+BIN_DIR = ROOT / "bin"
+if BIN_DIR.exists():
+    os.environ["PATH"] = str(BIN_DIR) + os.pathsep + os.environ.get("PATH", "")
+
 
 def _env(key: str, default: str = "") -> str:
     """Helper to fetch config from environment."""
@@ -257,9 +262,9 @@ CAPTION_ON_TOP = _env_bool("CAPTION_ON_TOP", True)
 BOTTOM_CALLOUT_ENABLED = _env_bool("BOTTOM_CALLOUT_ENABLED", False)
 
 # ── Creator Card & Visual Style Settings ─────────────────────────────
-PROFILE_PICTURE_PATH = ROOT / _env("PROFILE_PICTURE_PATH", f"{DATA_DIR_NAME}/assets/Diet Joke.jpg")
-CHANNEL_DISPLAY_NAME = _env("CHANNEL_DISPLAY_NAME", "Diet Joke")
-CHANNEL_HANDLE = _env("CHANNEL_HANDLE", "@DietJoke")
-BADGE_COLOR = _env("BADGE_COLOR", "#FB0101")  # Red verified tick circle
+PROFILE_PICTURE_PATH = ROOT / _env("PROFILE_PICTURE_PATH", f"{DATA_DIR_NAME}/assets/OnlyFails Cyan Wing Logo.png")
+CHANNEL_DISPLAY_NAME = _env("CHANNEL_DISPLAY_NAME", "OnlyFails")
+CHANNEL_HANDLE = _env("CHANNEL_HANDLE", "@onlyfail.s")
+BADGE_COLOR = _env("BADGE_COLOR", "#1DA1F2")  # Blue verified tick circle
 BACKGROUND_COLOR = _env("BACKGROUND_COLOR", "#FFFFFF")  # Pure white background
 FIT_CLIP_WIDTH = _env_bool("FIT_CLIP_WIDTH", True)
