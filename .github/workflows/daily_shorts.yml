@@ -41,11 +41,11 @@ jobs:
       contents: write
 
     steps:
-      # ── 1. Checkout ─────────────────────────────────────────────────────────
+      # ── 1. Fast Shallow Checkout ────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # ── 2. Python Setup ─────────────────────────────────────────────────────
@@ -55,12 +55,9 @@ jobs:
           python-version: "3.12"
           cache: "pip"
 
-      # ── 3. System Dependencies (FFmpeg & Fonts) ─────────────────────────────
-      - name: Install FFmpeg & fonts
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg fonts-liberation
-          fc-cache -fv
+      # ── 3. Verify FFmpeg (Pre-installed on GitHub Runners) ──────────────────
+      - name: Verify FFmpeg
+        run: ffmpeg -version
 
       # ── 4. Python Dependencies ──────────────────────────────────────────────
       - name: Install Python dependencies
