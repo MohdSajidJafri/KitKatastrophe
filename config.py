@@ -20,11 +20,11 @@ if BIN_DIR.exists():
 
 
 def _env(key: str, default: str = "") -> str:
-    """Helper to fetch config from environment."""
+    """Helper to fetch config from environment, stripping leading/trailing whitespace and quotes."""
     val = os.environ.get(key)
     if val is None or val.strip() == "":
         return default
-    return val
+    return val.strip().strip('"').strip("'").strip()
 
 
 def _env_bool(key: str, default: bool = False) -> bool:

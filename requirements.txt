@@ -15,6 +15,7 @@ edge-tts>=6.1.0
 
 # Video processing
 Pillow>=10.0.0
+numpy>=1.24.0
 
 # Downloading clips
 yt-dlp>=2024.0.0

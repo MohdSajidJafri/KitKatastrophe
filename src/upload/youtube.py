@@ -95,14 +95,18 @@ def _get_authenticated_service():
             creds = None
 
     # Fallback to refresh token in env
-    if (not creds or not creds.valid) and config.YT_REFRESH_TOKEN:
+    rtok = (config.YT_REFRESH_TOKEN or "").strip().strip('"').strip("'")
+    cid = (config.YT_CLIENT_ID or "").strip().strip('"').strip("'")
+    csec = (config.YT_CLIENT_SECRET or "").strip().strip('"').strip("'")
+
+    if (not creds or not creds.valid) and rtok:
         logger.info("Authenticating using YT_REFRESH_TOKEN env variable...")
         creds = Credentials(
             token=None,
-            refresh_token=config.YT_REFRESH_TOKEN,
+            refresh_token=rtok,
             token_uri="https://oauth2.googleapis.com/token",
-            client_id=config.YT_CLIENT_ID,
-            client_secret=config.YT_CLIENT_SECRET,
+            client_id=cid,
+            client_secret=csec,
             scopes=SCOPES,
         )
 

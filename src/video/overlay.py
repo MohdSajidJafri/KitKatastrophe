@@ -402,14 +402,20 @@ def _create_circular_avatar(img_path: Path | str, size: int = 132) -> Image.Imag
                 
     if path.exists():
         raw = Image.open(path).convert("RGBA")
-        import numpy as np
-        arr = np.array(raw)
-        # Isolate content bounding box (skip outer white background)
-        is_content = (arr[:, :, 0] < 240) | (arr[:, :, 1] < 240) | (arr[:, :, 2] < 240)
-        ys, xs = np.where(is_content)
-        if len(xs) > 0 and len(ys) > 0:
-            tight_logo = raw.crop((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
-        else:
+        try:
+            import numpy as np
+            arr = np.array(raw)
+            # Isolate content bounding box (skip outer white background)
+            is_content = (arr[:, :, 0] < 240) | (arr[:, :, 1] < 240) | (arr[:, :, 2] < 240)
+            ys, xs = np.where(is_content)
+            if len(xs) > 0 and len(ys) > 0:
+                tight_logo = raw.crop((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
+            else:
+                min_dim = min(raw.size)
+                left = (raw.width - min_dim) // 2
+                top = (raw.height - min_dim) // 2
+                tight_logo = raw.crop((left, top, left + min_dim, top + min_dim))
+        except Exception:
             min_dim = min(raw.size)
             left = (raw.width - min_dim) // 2
             top = (raw.height - min_dim) // 2
