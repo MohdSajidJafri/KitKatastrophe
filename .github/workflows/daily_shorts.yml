@@ -1,0 +1,114 @@
+name: OnlyFails Shorts Bot
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SCHEDULE: 2 runs per day (times are in UTC).
+# IST is UTC+5:30:
+#   13:00 IST → 07:30 UTC
+#   21:00 IST → 15:30 UTC
+# ─────────────────────────────────────────────────────────────────────────────
+on:
+  schedule:
+    - cron: "30 7 * * *"   # 13:00 IST (Lunchtime traffic window)
+    - cron: "30 15 * * *"  # 21:00 IST (Evening peak window)
+
+  # Allow running manually from GitHub Actions UI
+  workflow_dispatch:
+    inputs:
+      privacy:
+        description: "YouTube upload visibility"
+        required: false
+        default: "public"
+        type: choice
+        options: [public, unlisted, private]
+      subreddit:
+        description: "Override subreddit (leave blank for default WCGW, Unexpected, AccidentalSlapStick)"
+        required: false
+        default: ""
+
+# Prevent two runs from overlapping and corrupting tracking database
+concurrency:
+  group: onlyfails-shorts-pipeline
+  cancel-in-progress: false
+
+jobs:
+  generate-and-upload:
+    name: "Generate & Upload OnlyFails Short"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # Allows job to commit database updates back to the repo
+    permissions:
+      contents: write
+
+    steps:
+      # ── 1. Checkout ─────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── 2. Python Setup ─────────────────────────────────────────────────────
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      # ── 3. System Dependencies (FFmpeg & Fonts) ─────────────────────────────
+      - name: Install FFmpeg & fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-liberation
+          fc-cache -fv
+
+      # ── 4. Python Dependencies ──────────────────────────────────────────────
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      # ── 5. Run the Pipeline ─────────────────────────────────────────────────
+      - name: Run OnlyFails Shorts Pipeline
+        env:
+          # YouTube API Credentials
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID || secrets.YT_MEME_CLIENT_ID }}
+          YT_CLIENT_SECRET_VALUE: ${{ secrets.YT_CLIENT_SECRET_VALUE || secrets.YT_MEME_CLIENT_SECRET_VALUE }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN || secrets.YT_MEME_REFRESH_TOKEN }}
+          YOUTUBE_PRIVACY: ${{ github.event.inputs.privacy || 'public' }}
+
+          # Optional AI Safety & Curation Keys
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+          # Optional Reddit API Credentials (uses automatic anonymous scraper by default)
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT || 'OnlyFailsBot/1.0' }}
+
+        run: |
+          SUB="${{ github.event.inputs.subreddit }}"
+          CMD="python run_pipeline.py --force"
+
+          if [ -n "$SUB" ]; then
+            CMD="$CMD --subreddit $SUB"
+          fi
+
+          echo "Running: $CMD"
+          $CMD
+
+      # ── 6. Persist Database Back to Repo ───────────────────────────────────
+      # Commits processed_reddit_posts.json and upload_history.json
+      # so next run prevents duplicates and tracks daily limits.
+      - name: Commit database updates
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/database/*.json || true
+
+          if git diff --cached --quiet; then
+            echo "No database changes to commit."
+          else
+            git commit -m "chore(bot): update tracking database [skip ci]"
+            git push
+          fi

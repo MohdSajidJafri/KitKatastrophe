@@ -199,10 +199,10 @@ METADATA_TRENDING_TAGS = _env("METADATA_TRENDING_TAGS", "whatcouldgowrong, wcgw,
 METADATA_DISCLAIMER = _env("METADATA_DISCLAIMER", "Curated funny fail & unexpected clips from Reddit.")
 
 # ── Scheduler & Limits ───────────────────────────────────────
-MAX_VIDEOS_PER_DAY = int(_env("MAX_VIDEOS_PER_DAY", "4"))
+MAX_VIDEOS_PER_DAY = int(_env("MAX_VIDEOS_PER_DAY", "2"))
 UPLOAD_SCHEDULE_TIMES = [
     t.strip()
-    for t in _env("UPLOAD_SCHEDULE_TIMES", "09:00, 13:00, 17:00, 21:00").split(",")
+    for t in _env("UPLOAD_SCHEDULE_TIMES", "13:00, 21:00").split(",")
     if t.strip()
 ]
 
