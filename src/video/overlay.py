@@ -383,11 +383,13 @@ def _draw_verified_badge(size: int = 40, bg_color: tuple[int, int, int, int] = (
 
 
 def _create_circular_avatar(img_path: Path | str, size: int = 132) -> Image.Image:
-    """Loads and returns a circular-masked avatar with generous inner margin so nothing touches or clips the border."""
+    """Loads and returns a circular-masked avatar fitting the circle border perfectly."""
     path = Path(img_path)
     if not path.exists():
         assets_p = getattr(config, "ASSETS_DIR", config.ROOT / "data" / "assets")
         alt_paths = [
+            assets_p / "cropped_circle_image.png",
+            config.ROOT / "data" / "assets" / "cropped_circle_image.png",
             assets_p / "Gemini_Generated_Image_h35r80h35r80h35r.png",
             config.ROOT / "data" / "assets" / "Gemini_Generated_Image_h35r80h35r80h35r.png",
         ]
@@ -396,12 +398,44 @@ def _create_circular_avatar(img_path: Path | str, size: int = 132) -> Image.Imag
                 path = ap
                 break
                 
+    scale = 4
+    canvas_s = size * scale
+
     if path.exists():
         raw = Image.open(path).convert("RGBA")
+        is_transparent = False
         try:
             import numpy as np
             arr = np.array(raw)
-            # Isolate content bounding box (skip outer white background)
+            # If corners are transparent or has alpha channel mask, image is already a circle/shaped avatar
+            if arr[:, :, 3].min() < 50:
+                is_transparent = True
+        except Exception:
+            pass
+
+        if is_transparent:
+            # Already a circular or transparent avatar - fit full circle
+            min_dim = min(raw.width, raw.height)
+            left = (raw.width - min_dim) // 2
+            top = (raw.height - min_dim) // 2
+            square_img = raw.crop((left, top, left + min_dim, top + min_dim))
+            resized_img = square_img.resize((canvas_s, canvas_s), Image.Resampling.LANCZOS)
+
+            mask = Image.new("L", (canvas_s, canvas_s), 0)
+            d_mask = ImageDraw.Draw(mask)
+            d_mask.ellipse([(0, 0), (canvas_s - 1, canvas_s - 1)], fill=255)
+
+            circle_img = Image.new("RGBA", (canvas_s, canvas_s), (0, 0, 0, 0))
+            circle_img.paste(resized_img, (0, 0), mask)
+
+            d_circ = ImageDraw.Draw(circle_img)
+            d_circ.ellipse([(0, 0), (canvas_s - 1, canvas_s - 1)], outline=(228, 230, 235, 255), width=2 * scale)
+            return circle_img.resize((size, size), Image.Resampling.LANCZOS)
+
+        # For square/rectangular logos without transparency, isolate bounding box and pad
+        try:
+            import numpy as np
+            arr = np.array(raw)
             is_content = (arr[:, :, 0] < 240) | (arr[:, :, 1] < 240) | (arr[:, :, 2] < 240)
             ys, xs = np.where(is_content)
             if len(xs) > 0 and len(ys) > 0:
@@ -417,8 +451,6 @@ def _create_circular_avatar(img_path: Path | str, size: int = 132) -> Image.Imag
             top = (raw.height - min_dim) // 2
             tight_logo = raw.crop((left, top, left + min_dim, top + min_dim))
             
-        # Scale logo with generous inner breathing room (74% of circle diameter)
-        # to ensure there is plenty of clean padding and no text touches the border
         target_w = int(size * 0.74)
         scale_factor = target_w / tight_logo.width
         target_h = int(tight_logo.height * scale_factor)
@@ -434,8 +466,6 @@ def _create_circular_avatar(img_path: Path | str, size: int = 132) -> Image.Imag
         tight_logo = raw
         target_w, target_h = size, size
         
-    scale = 4
-    canvas_s = size * scale
     circle_img = Image.new("RGBA", (canvas_s, canvas_s), (255, 255, 255, 0))
     d_circ = ImageDraw.Draw(circle_img)
     d_circ.ellipse([(0, 0), (canvas_s - 1, canvas_s - 1)], fill=(255, 255, 255, 255))
@@ -541,7 +571,7 @@ def generate_creator_header_card(
         
     name = display_name or getattr(config, "CHANNEL_DISPLAY_NAME", "KitKatastrophe")
     hnd = handle or getattr(config, "CHANNEL_HANDLE", "@KitKatastroph.e")
-    pfp_path = profile_pic_path or getattr(config, "PROFILE_PICTURE_PATH", config.ROOT / "data" / "assets" / "Gemini_Generated_Image_h35r80h35r80h35r.png")
+    pfp_path = profile_pic_path or getattr(config, "PROFILE_PICTURE_PATH", config.ROOT / "data" / "assets" / "cropped_circle_image.png")
     badge_hex = getattr(config, "BADGE_COLOR", "#FB0101")
     badge_color = _parse_color(badge_hex)
 

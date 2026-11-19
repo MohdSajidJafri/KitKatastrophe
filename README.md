@@ -241,7 +241,7 @@ OnlyFails/
 │       └── daily_shorts.yml          # Automated 2x/day GitHub Actions runner
 ├── data/
 │   ├── assets/                       # Channel profile picture / logo
-│   │   └── Gemini_Generated_Image_h35r80h35r80h35r.png
+│   │   └── cropped_circle_image.png
 │   ├── database/                     # Deduplication and history tracking
 │   │   ├── processed_reddit_posts.json
 │   │   ├── subreddit_history.json
@@ -271,7 +271,7 @@ OnlyFails/
 |---|---|---|
 | `CURATOR_MODE` | `True` | Direct video curation mode with original audio preserved |
 | `SUBREDDITS` | `cats, catvideos, CatsBeingCats, funnycats, holdmycatnip, OneOrangeBraincell, StartledCats, Catculations, IllegallySmolCats, Kitten, CatsLivingAndWell` | Target subreddits for content ingestion |
-| `PROFILE_PICTURE_PATH`| `"data/assets/Gemini_Generated_Image_h35r80h35r80h35r.png"` | Path to your channel avatar image |
+| `PROFILE_PICTURE_PATH`| `"data/assets/cropped_circle_image.png"` | Path to your channel avatar image |
 | `CHANNEL_DISPLAY_NAME`| `"KitKatastrophe"` | Display name shown on Creator Header Card |
 | `CHANNEL_HANDLE` | `"@KitKatastroph.e"` | Handle shown below display name |
 | `BADGE_COLOR` | `"#FB0101"` | Hex color of verified badge (Vibrant Red) |
