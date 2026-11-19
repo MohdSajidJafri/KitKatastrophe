@@ -100,12 +100,32 @@ def main() -> None:
 
     flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
     try:
-        creds = flow.run_local_server(port=8080, open_browser=True)
+        creds = flow.run_local_server(
+            port=8080,
+            open_browser=True,
+            prompt="consent",
+            access_type="offline",
+        )
     except OSError:
         # If port 8080 is in use, fallback to any free port
-        creds = flow.run_local_server(port=0, open_browser=True)
+        creds = flow.run_local_server(
+            port=0,
+            open_browser=True,
+            prompt="consent",
+            access_type="offline",
+        )
 
     new_token = creds.refresh_token
+
+    if not new_token or str(new_token).strip().lower() == "none":
+        print()
+        print("❌ Error: Google did not return a refresh token (it returned None).")
+        print("   This happens when Google has already granted access previously.")
+        print()
+        print("   FIX: Go to https://myaccount.google.com/connections")
+        print("   Find your app, click 'Delete all connections', and run this script again.")
+        print()
+        sys.exit(1)
 
     print()
     print("=" * 60)
