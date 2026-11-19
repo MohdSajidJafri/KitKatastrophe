@@ -73,7 +73,7 @@ The pipeline operates in **Curator Mode** (`CURATOR_MODE=True`), designed after 
 * **Resumable YouTube OAuth2 Publishing**: Seamless chunked resumable upload script with automatic categorization, tags, and disclaimer inclusion.
 * **Smart Scheduler & De-duplication**:
   * Prevents duplicate video uploads via `data/database/processed_reddit_posts.json`.
-  * Enforces daily video limits (`MAX_VIDEOS_PER_DAY=2`) and designated upload hours (`13:00, 21:00 IST`).
+  * Enforces daily video limits (`MAX_VIDEOS_PER_DAY=4`) and designated upload hours (`09:00, 13:00, 17:00, 21:00 IST`).
 
 ---
 
@@ -196,7 +196,7 @@ python run_pipeline.py --force
 ```
 
 ### 3. Scheduled Execution (Production Mode)
-Checks if the current time matches `UPLOAD_SCHEDULE_TIMES` (`13:00, 21:00`) and verifies that the daily upload limit (`MAX_VIDEOS_PER_DAY=2`) is not exceeded:
+Checks if the current time matches `UPLOAD_SCHEDULE_TIMES` (`09:00, 13:00, 17:00, 21:00`) and verifies that the daily upload limit (`MAX_VIDEOS_PER_DAY=4`) is not exceeded:
 ```bash
 python run_pipeline.py
 ```
@@ -214,7 +214,7 @@ python run_pipeline.py
 
 ## ☁️ Automated Cloud Deployment (GitHub Actions)
 
-This repository includes a streamlined GitHub Actions workflow ([.github/workflows/daily_shorts.yml](.github/workflows/daily_shorts.yml)) that runs twice daily (13:00 and 21:00 IST) on a free GitHub-hosted runner.
+This repository includes a streamlined GitHub Actions workflow ([.github/workflows/daily_shorts.yml](.github/workflows/daily_shorts.yml)) that runs 4 times daily (09:00, 13:00, 17:00, and 21:00 IST) on a free GitHub-hosted runner.
 
 ### How to Enable:
 1. Go to your repository on GitHub: **Settings** > **Secrets and variables** > **Actions**.
@@ -278,8 +278,8 @@ OnlyFails/
 | `BACKGROUND_COLOR` | `"#FFFFFF"` | Background canvas hex color |
 | `MAX_MEME_DURATION` | `59` | Max allowed video length in seconds |
 | `MIN_MEME_DURATION` | `3` | Min allowed video length in seconds |
-| `MAX_VIDEOS_PER_DAY` | `2` | Maximum daily upload limit |
-| `UPLOAD_SCHEDULE_TIMES`| `13:00, 21:00` | Designated daily upload windows (IST) |
+| `MAX_VIDEOS_PER_DAY` | `4` | Maximum daily upload limit |
+| `UPLOAD_SCHEDULE_TIMES`| `09:00, 13:00, 17:00, 21:00` | Designated daily upload windows (IST) |
 | `YOUTUBE_PRIVACY` | `public` | YouTube visibility (`public`, `unlisted`, `private`) |
 
 ---

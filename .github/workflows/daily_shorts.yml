@@ -1,15 +1,19 @@
 name: OnlyFails Shorts Bot
 
 # ─────────────────────────────────────────────────────────────────────────────
-# SCHEDULE: 2 runs per day (times are in UTC).
+# SCHEDULE: 4 runs per day (times are in UTC).
 # IST is UTC+5:30:
+#   09:00 IST → 03:30 UTC
 #   13:00 IST → 07:30 UTC
+#   17:00 IST → 11:30 UTC
 #   21:00 IST → 15:30 UTC
 # ─────────────────────────────────────────────────────────────────────────────
 on:
   schedule:
+    - cron: "30 3 * * *"   # 09:00 IST (Morning commute window)
     - cron: "30 7 * * *"   # 13:00 IST (Lunchtime traffic window)
-    - cron: "30 15 * * *"  # 21:00 IST (Evening peak window)
+    - cron: "30 11 * * *"  # 17:00 IST (Evening commute window)
+    - cron: "30 15 * * *"  # 21:00 IST (Night peak window)
 
   # Allow running manually from GitHub Actions UI
   workflow_dispatch:
