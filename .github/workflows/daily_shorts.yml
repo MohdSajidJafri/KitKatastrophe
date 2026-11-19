@@ -25,7 +25,7 @@ on:
         type: choice
         options: [public, unlisted, private]
       subreddit:
-        description: "Override subreddit (leave blank for default WCGW, Unexpected, AccidentalSlapStick)"
+        description: "Override subreddit (leave blank for default cat subreddits: cats, catvideos, CatsBeingCats, etc.)"
         required: false
         default: ""
 
