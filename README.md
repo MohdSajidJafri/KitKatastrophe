@@ -1,4 +1,4 @@
-# 🎬 OnlyFails — Automated Reddit to YouTube Shorts Pipeline
+# 🎬 KitKatastrophe — Automated Reddit to YouTube Shorts Pipeline
 
 A fully autonomous, production-grade Python pipeline that curates high-performing video clips from Reddit, renders viral 9:16 vertical Shorts at 60 FPS with sleek Twitter/X-style creator header cards, and publishes them to YouTube on an automated schedule.
 
@@ -36,18 +36,18 @@ The pipeline operates in **Curator Mode** (`CURATOR_MODE=True`), designed after 
 │            PURE WHITE BACKGROUND CANVAS       │
 │                                               │
 │   ┌───────────────────────────────────────┐   │
-│   │ [Avatar] OnlyFails [✓ Verified (Blue)]│   │  <-- Dynamic Twitter/X-style
-│   │          @onlyfail.s                  │   │      Creator Header Card
+│   │ [Avatar] KitKatastrophe [✓ Verified (Red)]│   <-- Dynamic Twitter/X-style
+│   │          @KitKatastroph.e             │   │       Creator Header Card
 │   │                                       │   │
-│   │ "Bro really doubted physics for a    │   │  <-- Clean post title / hook
-│   │  second 😂"                           │   │      with native emoji support
+│   │ "Bro really doubted physics for a     │   │   <-- Clean post title / hook
+│   │  second 😂"                           │   │       with native emoji support
 │   └───────────────────────────────────────┘   │
 │                                               │
 │   ┌───────────────────────────────────────┐   │
 │   │                                       │   │
-│   │                                       │   │  <-- Original Reddit Video
-│   │         ORIGINAL VIDEO MEME           │   │      (Scaled 1080px edge-to-edge,
-│   │                                       │   │       original audio preserved)
+│   │                                       │   │   <-- Original Reddit Video
+│   │         ORIGINAL VIDEO MEME           │   │       (Scaled 1080px edge-to-edge,
+│   │                                       │   │        original audio preserved)
 │   │                                       │   │
 │   └───────────────────────────────────────┘   │
 │                                               │
@@ -91,8 +91,8 @@ The pipeline operates in **Curator Mode** (`CURATOR_MODE=True`), designed after 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/MohdSajidJafri/OnlyFails.git
-cd OnlyFails
+git clone https://github.com/MohdSajidJafri/KitKatastrophe.git
+cd KitKatastrophe
 ```
 
 ### 2. Create a Virtual Environment
@@ -241,7 +241,7 @@ OnlyFails/
 │       └── daily_shorts.yml          # Automated 2x/day GitHub Actions runner
 ├── data/
 │   ├── assets/                       # Channel profile picture / logo
-│   │   └── OnlyFails Cyan Wing Logo.png
+│   │   └── Gemini_Generated_Image_h35r80h35r80h35r.png
 │   ├── database/                     # Deduplication and history tracking
 │   │   ├── processed_reddit_posts.json
 │   │   ├── subreddit_history.json
@@ -271,10 +271,10 @@ OnlyFails/
 |---|---|---|
 | `CURATOR_MODE` | `True` | Direct video curation mode with original audio preserved |
 | `SUBREDDITS` | `Whatcouldgowrong, Unexpected, AccidentalSlapStick` | Target subreddits for content ingestion |
-| `PROFILE_PICTURE_PATH`| `"data/assets/OnlyFails Cyan Wing Logo.png"` | Path to your channel avatar image |
-| `CHANNEL_DISPLAY_NAME`| `"OnlyFails"` | Display name shown on Creator Header Card |
-| `CHANNEL_HANDLE` | `"@onlyfail.s"` | Handle shown below display name |
-| `BADGE_COLOR` | `"#1DA1F2"` | Hex color of verified badge (Twitter/X Blue) |
+| `PROFILE_PICTURE_PATH`| `"data/assets/Gemini_Generated_Image_h35r80h35r80h35r.png"` | Path to your channel avatar image |
+| `CHANNEL_DISPLAY_NAME`| `"KitKatastrophe"` | Display name shown on Creator Header Card |
+| `CHANNEL_HANDLE` | `"@KitKatastroph.e"` | Handle shown below display name |
+| `BADGE_COLOR` | `"#FB0101"` | Hex color of verified badge (Vibrant Red) |
 | `BACKGROUND_COLOR` | `"#FFFFFF"` | Background canvas hex color |
 | `MAX_MEME_DURATION` | `59` | Max allowed video length in seconds |
 | `MIN_MEME_DURATION` | `3` | Min allowed video length in seconds |

@@ -1,4 +1,4 @@
-name: OnlyFails Shorts Bot
+name: KitKatastrophe Shorts Bot
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SCHEDULE: 4 runs per day (times are in UTC).
@@ -31,12 +31,12 @@ on:
 
 # Prevent two runs from overlapping and corrupting tracking database
 concurrency:
-  group: onlyfails-shorts-pipeline
+  group: kitkatastrophe-shorts-pipeline
   cancel-in-progress: false
 
 jobs:
   generate-and-upload:
-    name: "Generate & Upload OnlyFails Short"
+    name: "Generate & Upload KitKatastrophe Short"
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -70,7 +70,7 @@ jobs:
         run: pip install -r requirements.txt
 
       # ── 5. Run the Pipeline ─────────────────────────────────────────────────
-      - name: Run OnlyFails Shorts Pipeline
+      - name: Run KitKatastrophe Shorts Pipeline
         env:
           # YouTube API Credentials
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID || secrets.YT_MEME_CLIENT_ID }}
@@ -85,7 +85,7 @@ jobs:
           # Optional Reddit API Credentials (uses automatic anonymous scraper by default)
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
-          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT || 'OnlyFailsBot/1.0' }}
+          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT || 'KitKatastropheBot/1.0' }}
 
         run: |
           SUB="${{ github.event.inputs.subreddit }}"

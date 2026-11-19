@@ -262,9 +262,9 @@ CAPTION_ON_TOP = _env_bool("CAPTION_ON_TOP", True)
 BOTTOM_CALLOUT_ENABLED = _env_bool("BOTTOM_CALLOUT_ENABLED", False)
 
 # ── Creator Card & Visual Style Settings ─────────────────────────────
-PROFILE_PICTURE_PATH = ROOT / _env("PROFILE_PICTURE_PATH", f"{DATA_DIR_NAME}/assets/OnlyFails Cyan Wing Logo.png")
-CHANNEL_DISPLAY_NAME = _env("CHANNEL_DISPLAY_NAME", "OnlyFails")
-CHANNEL_HANDLE = _env("CHANNEL_HANDLE", "@onlyfail.s")
-BADGE_COLOR = _env("BADGE_COLOR", "#1DA1F2")  # Blue verified tick circle
+PROFILE_PICTURE_PATH = ROOT / _env("PROFILE_PICTURE_PATH", f"{DATA_DIR_NAME}/assets/Gemini_Generated_Image_h35r80h35r80h35r.png")
+CHANNEL_DISPLAY_NAME = _env("CHANNEL_DISPLAY_NAME", "KitKatastrophe")
+CHANNEL_HANDLE = _env("CHANNEL_HANDLE", "@KitKatastroph.e")
+BADGE_COLOR = _env("BADGE_COLOR", "#FB0101")  # Red verified tick circle
 BACKGROUND_COLOR = _env("BACKGROUND_COLOR", "#FFFFFF")  # Pure white background
 FIT_CLIP_WIDTH = _env_bool("FIT_CLIP_WIDTH", True)

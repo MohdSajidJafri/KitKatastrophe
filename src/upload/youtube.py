@@ -21,7 +21,7 @@ def load_upload_history() -> List[Dict]:
     """Load the upload history database."""
     if config.UPLOAD_HISTORY_FILE.exists():
         try:
-            with open(config.UPLOAD_HISTORY_FILE, "r", encoding="utf-8") as f:
+            with open(config.UPLOAD_HISTORY_FILE, "r", encoding="utf-8-sig") as f:
                 return json.load(f)
         except Exception as e:
             logger.warning(f"Failed to read upload history: {e}. Starting fresh.")

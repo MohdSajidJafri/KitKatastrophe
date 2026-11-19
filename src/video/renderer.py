@@ -580,7 +580,7 @@ def render_short(
     
     # 5. Draw Progress Bar (synced to exact render duration)
     if config.OVERLAY_PROGRESS_BAR:
-        progress_color = getattr(config, "BADGE_COLOR", "#1DA1F2").replace("#", "0x")  # Blue
+        progress_color = getattr(config, "BADGE_COLOR", "#FB0101").replace("#", "0x")  # Red
         bar_y = 1880
         bar_height = 12
         filter_chains.append(
@@ -789,7 +789,7 @@ def render_curator_short(
         
     # E. Draw Progress Bar (synced to exact render duration)
     if config.OVERLAY_PROGRESS_BAR:
-        progress_color = getattr(config, "BADGE_COLOR", "#1DA1F2").replace("#", "0x")  # Blue
+        progress_color = getattr(config, "BADGE_COLOR", "#FB0101").replace("#", "0x")  # Red
         bar_y = 1880
         bar_height = 12
         filter_chains.append(

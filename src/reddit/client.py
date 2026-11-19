@@ -85,7 +85,7 @@ def load_processed_ids() -> Set[str]:
     ids = set()
     if config.HISTORY_FILE.exists():
         try:
-            with open(config.HISTORY_FILE, "r", encoding="utf-8") as f:
+            with open(config.HISTORY_FILE, "r", encoding="utf-8-sig") as f:
                 data = json.load(f)
                 if isinstance(data, list):
                     ids.update(data)
@@ -96,7 +96,7 @@ def load_processed_ids() -> Set[str]:
     rejected_file = config.DB_DIR / "rejected_posts.json"
     if rejected_file.exists():
         try:
-            with open(rejected_file, "r", encoding="utf-8") as f:
+            with open(rejected_file, "r", encoding="utf-8-sig") as f:
                 data = json.load(f)
                 if isinstance(data, list):
                     for item in data:
@@ -113,7 +113,7 @@ def load_subreddit_history() -> List[str]:
     history_file = config.DB_DIR / "subreddit_history.json"
     if history_file.exists():
         try:
-            with open(history_file, "r", encoding="utf-8") as f:
+            with open(history_file, "r", encoding="utf-8-sig") as f:
                 data = json.load(f)
                 if isinstance(data, list):
                     return data
