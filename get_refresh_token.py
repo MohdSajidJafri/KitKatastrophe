@@ -80,7 +80,11 @@ def main() -> None:
             "client_secret": YT_CLIENT_SECRET,
             "auth_uri": "https://accounts.google.com/o/oauth2/auth",
             "token_uri": "https://oauth2.googleapis.com/token",
-            "redirect_uris": ["http://localhost"],
+            "redirect_uris": [
+                "http://localhost:8080/",
+                "http://127.0.0.1:8080/",
+                "http://localhost",
+            ],
         }
     }
 
@@ -95,7 +99,11 @@ def main() -> None:
     print()
 
     flow = InstalledAppFlow.from_client_config(client_config, SCOPES)
-    creds = flow.run_local_server(port=0, open_browser=True)
+    try:
+        creds = flow.run_local_server(port=8080, open_browser=True)
+    except OSError:
+        # If port 8080 is in use, fallback to any free port
+        creds = flow.run_local_server(port=0, open_browser=True)
 
     new_token = creds.refresh_token
 
