@@ -83,17 +83,17 @@ class GroqProvider(BaseLLMProvider):
             raise last_err
 
 
-SYSTEM_PROMPT_CURATOR = """You are an expert social media meme editor who writes viral, punchy captions for fail & unexpected video shorts (like Twitter/X memes).
+SYSTEM_PROMPT_CURATOR = """You are an expert social media meme editor who writes viral, punchy captions for funny & cute cat video shorts (like Twitter/X / Instagram cat reels).
 
 Task:
-Convert the provided Reddit post title into a snappy, engaging 4 to 12 word caption.
+Convert the provided Reddit post title into a snappy, engaging 4 to 12 word caption highlighting the cat's hilarious behavior, cute antics, or playful chaos.
 
 Guidelines:
 1. WORD COUNT: Exactly 4 to 12 words. Neither too short nor too long.
-2. RELEVANCE: Directly resemble and reflect the funny/unexpected action in the video based on the post context.
-3. VAGUE TITLES: If the Reddit title is lazy, vague, or not to the point (e.g. 'An interesting title', 'Title', 'WCGW', 'Wait for it', 'Interesting', 'lol', 'Seen today', 'Wait till the end', 'Hold my beer'), generate a relatable, punchy general title suited for funny unexpected fails (e.g. 'Bro really thought he had it 💀', 'That escalated way too quickly 😭', 'Never let them know your next move 😂', 'Bro doubted physics for a sec 😂').
-4. STYLE: Casual, modern creator humor (e.g. 'Bro doubted physics for a sec 😂', 'Muscle memory is crazy 💀', 'Confidence was high, execution was not 😭').
-5. EMOJIS: Include 1 relevant emoji (😂, 💀, 😭, 🤦‍♂️, etc.) at the end.
+2. RELEVANCE: Directly resemble and reflect the funny/cute cat behavior in the video based on the post context.
+3. VAGUE TITLES: If the Reddit title is lazy, vague, or generic (e.g. 'An interesting title', 'Title', 'Cat', 'Wait for it', 'lol', 'Seen today', 'Wait till the end', 'Meow'), generate a relatable, punchy title suited for funny and cute cats (e.g. 'Zero thoughts behind those eyes 🐱', 'The cat software crashed again 💀', 'Single brain cell operating at 1% 😹', 'He woke up and chose chaos 😼', 'Peak cat behavior 😂').
+4. STYLE: Modern cat lover & internet meme humor (e.g. 'Catculations were slightly off 😂', 'Orange cat activities 😭', 'Standard orange cat behavior 🐱', 'Not a single thought in that head 😂').
+5. EMOJIS: Include 1-2 relevant cute/funny emojis (🐱, 😹, 😂, 😭, 💀, 🐾, etc.) at the end.
 6. FORMAT: Return ONLY the caption on a single line. Do not include quotes, prefixes, or explanations."""
 
 
@@ -163,11 +163,14 @@ def _fallback_curator_caption(title: str) -> str:
     """Safe local fallback for caption generation."""
     clean = title.strip()
     words = clean.split()
-    vague_patterns = ["an interesting title", "title", "wcgw", "wait for it", "wait till the end", "lol", "interesting", "seen today"]
+    vague_patterns = [
+        "an interesting title", "title", "cat", "cats", "wait for it",
+        "wait till the end", "lol", "interesting", "seen today", "meow"
+    ]
     if clean.lower().strip(".,!?:") in vague_patterns or len(words) <= 1:
-        return "Bro really thought he had it 💀"
+        return "Zero thoughts behind those eyes 🐱"
     
     if len(words) > 12:
-        return " ".join(words[:12]) + " 💀"
+        return " ".join(words[:12]) + " 🐱"
     return clean
 

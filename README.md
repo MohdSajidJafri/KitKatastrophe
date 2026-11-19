@@ -39,14 +39,14 @@ The pipeline operates in **Curator Mode** (`CURATOR_MODE=True`), designed after 
 │   │ [Avatar] KitKatastrophe [✓ Verified (Red)]│   <-- Dynamic Twitter/X-style
 │   │          @KitKatastroph.e             │   │       Creator Header Card
 │   │                                       │   │
-│   │ "Bro really doubted physics for a     │   │   <-- Clean post title / hook
-│   │  second 😂"                           │   │       with native emoji support
+│   │ "Zero thoughts behind those eyes  │   │   <-- Clean post title / hook
+│   │  🐱"                              │   │       with native emoji support
 │   └───────────────────────────────────────┘   │
 │                                               │
 │   ┌───────────────────────────────────────┐   │
 │   │                                       │   │
-│   │                                       │   │   <-- Original Reddit Video
-│   │         ORIGINAL VIDEO MEME           │   │       (Scaled 1080px edge-to-edge,
+│   │                                       │   │   <-- Original Reddit Cat Video
+│   │         ORIGINAL CAT VIDEO            │   │       (Scaled 1080px edge-to-edge,
 │   │                                       │   │        original audio preserved)
 │   │                                       │   │
 │   └───────────────────────────────────────┘   │
@@ -63,7 +63,7 @@ The pipeline operates in **Curator Mode** (`CURATOR_MODE=True`), designed after 
 
 ## 🚀 Key Features
 
-* **Curator Mode (Default)**: Automatically curates funny fails and unexpected video clips, pairs them with punchy creator captions, and packages them into clean 9:16 60 FPS vertical video.
+* **Curator Mode (Default)**: Automatically curates funny & cute cat video clips from top Reddit cat communities, pairs them with punchy creator captions, and packages them into clean 9:16 60 FPS vertical video.
 * **Fast & Resilient Ingestion**: Uses `curl-cffi` browser TLS impersonation, automatic Redlib instance rotation, and anonymous feeds. No Reddit developer credentials required.
 * **Multi-Stage Content Safety Guard**:
   1. *Ingestion*: Filters NSFW, pinned posts, prohibited keywords (14 categories), low scores, and duplicates.
@@ -270,7 +270,7 @@ OnlyFails/
 | Variable | Default | Description |
 |---|---|---|
 | `CURATOR_MODE` | `True` | Direct video curation mode with original audio preserved |
-| `SUBREDDITS` | `Whatcouldgowrong, Unexpected, AccidentalSlapStick` | Target subreddits for content ingestion |
+| `SUBREDDITS` | `cats, catvideos, CatsBeingCats, funnycats, holdmycatnip, OneOrangeBraincell, StartledCats, Catculations, IllegallySmolCats, Kitten, CatsLivingAndWell` | Target subreddits for content ingestion |
 | `PROFILE_PICTURE_PATH`| `"data/assets/Gemini_Generated_Image_h35r80h35r80h35r.png"` | Path to your channel avatar image |
 | `CHANNEL_DISPLAY_NAME`| `"KitKatastrophe"` | Display name shown on Creator Header Card |
 | `CHANNEL_HANDLE` | `"@KitKatastroph.e"` | Handle shown below display name |

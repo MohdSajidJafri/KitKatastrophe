@@ -7,46 +7,53 @@ from src.reddit.models import RedditPost
 
 # Default Lists of Tags and Hashtags
 EVERGREEN_TAGS = [
-    "shorts", "youtubeshorts", "viral", "trending", "whatcouldgowrong",
-    "wcgw", "unexpected", "accidentalslapstick", "slapstick", "instantkarma", "instantregret", "fail",
-    "fails", "funny videos", "reddit", "fyp", "comedy", "humor"
+    "shorts", "youtubeshorts", "viral", "trending", "cats",
+    "cat", "funny cats", "cute cats", "cat videos", "kitten", "kittens",
+    "cat memes", "meow", "purr", "cats of youtube", "catsofyoutube",
+    "funny animals", "cute animals", "pets", "pet lovers", "oneorangebraincell"
 ]
 
 DEFAULT_TRENDING_TAGS = [
-    "whatcouldgowrong", "wcgw", "unexpected", "accidentalslapstick", "slapstick", "instantkarma", "instantregret",
-    "fail", "fails", "viral", "fyp", "shorts", "comedy"
+    "cats", "funny cats", "cute cats", "cat videos", "kitten",
+    "cat memes", "meow", "oneorangebraincell", "catsbeingcats",
+    "viral", "fyp", "shorts", "cute animals"
 ]
 
 EVERGREEN_HASHTAGS = [
-    "#Shorts", "#WhatCouldGoWrong", "#Unexpected", "#AccidentalSlapStick", "#Slapstick", "#InstantKarma",
-    "#InstantRegret", "#Fail", "#Fails", "#Funny", "#Reddit", "#Comedy", "#Viral"
+    "#Shorts", "#Cats", "#CuteCats", "#FunnyCats", "#CatVideos",
+    "#Kitten", "#CatMemes", "#CatsOfYouTube", "#Meow", "#Viral",
+    "#FunnyAnimals", "#OneOrangeBraincell", "#CatsBeingCats"
 ]
 
 # Curiosity-driven title templates if LLM title is missing or invalid
 TITLE_TEMPLATES = [
-    "This is way too relatable...",
-    "Why is this actually true?",
-    "I feel personally called out by this...",
-    "Who else does this every single time?",
-    "This made me laugh way too hard!",
-    "Expectation vs Reality is crazy...",
-    "I wasn't expecting that ending!",
-    "This is surprisingly wholesome...",
-    "My last brain cell trying to figure this out...",
-    "Wait for the end, it gets better..."
+    "Zero thoughts behind those eyes...",
+    "The cat software crashed again!",
+    "Peak cat behavior right here...",
+    "Why do cats actually do this?",
+    "Single brain cell operating at 1%...",
+    "Catculations were slightly off...",
+    "He woke up and chose chaos today!",
+    "This is pure feline comedy...",
+    "Tell me your cat does this too...",
+    "Wait for the end, you won't regret it!"
 ]
 
 # Call to Action (CTA) list
 CTA_LIST = [
-    "Who can relate to this? Let me know below!",
-    "Tag a friend who is exactly like this!",
-    "Has this ever happened to you? Tell me below!",
-    "Share your favorite part in the comments!",
-    "Rate this meme from 1 to 10 in the comments!"
+    "Who else has a cat like this? Let me know below! 🐱",
+    "Tag a fellow cat lover who needs to see this! 🐾",
+    "Which cat breed or color is your favorite? Tell me below! 👇",
+    "Share your funniest cat moment in the comments! 😹",
+    "Rate this cat from 1 to 10 in the comments! 🐾"
 ]
 
 # Mapping human-readable categories to YouTube category IDs
 CATEGORY_MAPPING = {
+    "pets & animals": "15",
+    "pets": "15",
+    "animals": "15",
+    "cats": "15",
     "comedy": "23",
     "entertainment": "24",
     "education": "27",
@@ -213,8 +220,8 @@ def generate_optimized_metadata(
     # Add content-specific tags
     tags_pool.add(post.subreddit.lower())
     tags_pool.add(f"r/{post.subreddit.lower()}")
-    tags_pool.add("reddit stories")
-    tags_pool.add("reddit narration")
+    tags_pool.add("cute cats")
+    tags_pool.add("funny cats")
     
     if llm_content_tags:
         tags_pool.update([t.lower().strip() for t in llm_content_tags])
@@ -222,7 +229,7 @@ def generate_optimized_metadata(
     final_tags = list(tags_pool)[:20]  # Max 20 tags to avoid keyword stuffing
 
     # ── 5. CATEGORY ID SELECTION ────────────────────────────────────────────
-    category_id = "22"  # default: People & Blogs
+    category_id = getattr(config, "YOUTUBE_CATEGORY_ID", "15")  # default: 15 Pets & Animals
     if llm_category:
         cat_clean = llm_category.lower().strip()
         if cat_clean in CATEGORY_MAPPING:

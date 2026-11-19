@@ -57,7 +57,7 @@ SUBREDDITS = [
     s.strip()
     for s in _env(
         "SUBREDDITS",
-        "Whatcouldgowrong, Unexpected, AccidentalSlapStick",
+        "cats, catvideos, CatsBeingCats, funnycats, holdmycatnip, OneOrangeBraincell, StartledCats, Catculations, IllegallySmolCats, Kitten, CatsLivingAndWell",
     ).split(",")
     if s.strip()
 ]
@@ -69,11 +69,17 @@ for s in SUBREDDITS:
 
 # High priority subreddits get configured weights
 _preferred_weights = {
-    "Whatcouldgowrong": 5.0,
-    "Unexpected": 5.0,
-    "AccidentalSlapStick": 5.0,
-    "memes": 3.0,
-    "dankmemes": 3.0,
+    "cats": 5.0,
+    "catvideos": 5.0,
+    "CatsBeingCats": 5.0,
+    "funnycats": 5.0,
+    "holdmycatnip": 5.0,
+    "OneOrangeBraincell": 5.0,
+    "StartledCats": 5.0,
+    "Catculations": 4.0,
+    "IllegallySmolCats": 4.0,
+    "Kitten": 3.0,
+    "CatsLivingAndWell": 3.0,
 }
 for s, w in _preferred_weights.items():
     if s in SUBREDDIT_WEIGHTS:
@@ -192,11 +198,15 @@ YT_CLIENT_ID = _env("YT_CLIENT_ID", _env("YT_MEME_CLIENT_ID"))
 YT_CLIENT_SECRET = _env("YT_CLIENT_SECRET_VALUE", _env("YT_MEME_CLIENT_SECRET_VALUE"))
 YT_REFRESH_TOKEN = _env("YT_REFRESH_TOKEN", _env("YT_MEME_REFRESH_TOKEN"))
 YT_PRIVACY = _env("YOUTUBE_PRIVACY", "public")
+YOUTUBE_CATEGORY_ID = _env("YOUTUBE_CATEGORY_ID", "15")  # 15 = Pets & Animals
 
 # Engagement Metadata Customizations
 METADATA_MENTIONS = _env("METADATA_MENTIONS", "")
-METADATA_TRENDING_TAGS = _env("METADATA_TRENDING_TAGS", "whatcouldgowrong, wcgw, unexpected, instantregret, instantkarma, fail, fails, viral, shorts")
-METADATA_DISCLAIMER = _env("METADATA_DISCLAIMER", "Curated funny fail & unexpected clips from Reddit.")
+METADATA_TRENDING_TAGS = _env(
+    "METADATA_TRENDING_TAGS",
+    "cats, cat, cute cats, funny cats, cat videos, kitten, kittens, cat memes, meow, oneorangebraincell, catlover, cuteanimals, funnyanimals, shorts",
+)
+METADATA_DISCLAIMER = _env("METADATA_DISCLAIMER", "Curated funny and cute cat clips from Reddit.")
 
 # ── Scheduler & Limits ───────────────────────────────────────
 MAX_VIDEOS_PER_DAY = int(_env("MAX_VIDEOS_PER_DAY", "4"))
